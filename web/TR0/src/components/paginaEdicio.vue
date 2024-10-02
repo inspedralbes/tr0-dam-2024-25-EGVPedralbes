@@ -1,24 +1,29 @@
 <template>
   <div>
     <!-- Botó per mostrar o amagar el formulari -->
-    <button @click="show = !show">Mostrar</button>
+    <button @click="show = !show">Crear pregunta</button>
   </div>
   <!-- Formulari per afegir una nova pregunta -->
-  <div v-if=show>
+  <div v-if=show >
     <h2>Afegir Pregunta</h2>
     <form action="">
       <label for="Enunciat">Enunciat</label>
       <input v-model="newPregunta.pregunta" type="text" name="pregunta" id="Enunciat">
-      <div class="grid">
+      <div>
         <div>
           <h2>Respostes</h2>
           <!-- Inputs per les respostes -->
-          <input v-for="(resposta, index) in newPregunta.respostes" v-model="newPregunta.respostes[index]" type="text" :name="'resposta'+index" :id="'resposta'+index">
+           <div v-for="(resposta, index) in newPregunta.respostes" >
+
+          <input type="radio" name="correcta" :id="'radio'+index" :value="index" v-model="newPregunta.correcta" class="resposta">
+          <input 
+            v-model="newPregunta.respostes[index]" 
+            type="text" 
+            :name="'resposta'+index" 
+            :id="'resposta'+index" 
+          >
+          
         </div>
-        <div>
-          <h2>Correcta</h2>
-          <!-- Inputs per seleccionar la resposta correcta -->
-          <input v-for="(resposta, index) in newPregunta.respostes" type="radio" name="correcta" :id="'radio'+index" :value="index" v-model="newPregunta.correcta">
         </div>
       </div>
       <label for="imatge">Imatge (En link)</label>
@@ -28,12 +33,13 @@
     </form>
   </div>
   <!-- Llista de preguntes existents -->
-  <div v-if=!show>
+  <div v-if=!show class="table">
     <div v-for="pregunta in preguntes">
       <div v-if="!checkModifies(pregunta.id)">
         <p>{{ pregunta.pregunta }}</p>
-        <div class="respostes">
-          <p v-for="resposta in pregunta.respostes">{{ resposta }}</p>
+        <img :src="pregunta.imatge ?? ''" alt="">
+        <div class="respostes" >
+          <p v-for="(resposta, index) in pregunta.respostes":class="index == pregunta.resposta_correcta ? 'correcta' : 'option'" >{{ resposta }}</p>
         </div>
         <button @click="changeModifyState(pregunta.id)">Editar</button>
         <!-- Botó per esborrar una pregunta -->
@@ -43,7 +49,7 @@
         <label :for="'Enunciat' + pregunta.id">Enunciat</label>
         <input v-model="updatePreguntaData.pregunta" type="text" :name="'pregunta' + pregunta.id" :id="'Enunciat' + pregunta.id">
         <p>Respostes</p>
-        <div :class="'respostes'+pregunta.id" v-for="(resposta, index) in updatePreguntaData.respostes">  
+        <div :class="'respostes'+pregunta.id" v-for="(resposta, index) in updatePreguntaData.respostes" class="resposta">  
           <input  type="text" :name="index +'resposta' + pregunta.id" :id="index + 'resposta' + pregunta.id" :value="resposta" v-model="updatePreguntaData.respostes[index]">
           <input type="radio" :name="'radio'+pregunta.id" :id="index+'radio'+pregunta.id" :value="index" v-if="index==updatePreguntaData.correcta" v-model="updatePreguntaData.correcta" checked>
           <input type="radio" :name="'radio'+pregunta.id" :id="index+'radio'+pregunta.id" :value="index" v-else v-model="updatePreguntaData.correcta">
@@ -160,3 +166,114 @@ onMounted(async () => {
   preguntes.value = await callfindAllPreguntes();
 });
 </script>
+
+<style>
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.respostes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.correcta{
+  background-color: green;
+}
+.table{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+.table>div{
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+img{
+  display: block;
+  margin: 0 auto;
+  width: 50%
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  margin: 20px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+}
+
+h2 {
+  color: #333;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.table div {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.respostes p {
+  margin: 5px 0;
+}
+
+.correcta {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.option {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+</style>
