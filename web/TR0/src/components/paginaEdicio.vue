@@ -14,8 +14,9 @@
           <h2>Respostes</h2>
           <!-- Inputs per les respostes -->
            <div v-for="(resposta, index) in newPregunta.respostes" >
-
-          <input type="radio" name="correcta" :id="'radio'+index" :value="index" v-model="newPregunta.correcta" class="resposta">
+            <label :for="'radio'+index">Correcta?</label>
+             <input type="radio" name="correcta" :id="'radio'+index" :value="index" v-model="newPregunta.correcta" class="resposta">
+             <label :for="'resposta'+index">Resposta {{ index + 1 }}</label>
           <input 
             v-model="newPregunta.respostes[index]" 
             type="text" 
@@ -51,6 +52,7 @@
         <p>Respostes</p>
         <div :class="'respostes'+pregunta.id" v-for="(resposta, index) in updatePreguntaData.respostes" class="resposta">  
           <input  type="text" :name="index +'resposta' + pregunta.id" :id="index + 'resposta' + pregunta.id" :value="resposta" v-model="updatePreguntaData.respostes[index]">
+          <label :for="index+'radio'+pregunta.id">Correcta?</label>
           <input type="radio" :name="'radio'+pregunta.id" :id="index+'radio'+pregunta.id" :value="index" v-if="index==updatePreguntaData.correcta" v-model="updatePreguntaData.correcta" checked>
           <input type="radio" :name="'radio'+pregunta.id" :id="index+'radio'+pregunta.id" :value="index" v-else v-model="updatePreguntaData.correcta">
 
