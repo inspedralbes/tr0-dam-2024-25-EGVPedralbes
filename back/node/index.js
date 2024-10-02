@@ -17,9 +17,20 @@ app.get('/preguntes', (req, res) => {
     res.send(json.preguntes);
 });
 
+app.get('/pregunta/:id', (req, res) => {
+    const id = req.params.id;
+    const pregunta = json.preguntes.find(pregunta => pregunta.id == id);
+    if(pregunta){
+        res.send(pregunta);
+    }
+    else {
+        res.send('No existeix la pregunta');
+    }
+});
+
 app.post('/addPregunta', (req, res) => {
     const { pregunta, respostes,correcta,imatge } = req.body;
-    if(!pregunta || !respostes || !correcta || !imatge || respostes.length<4 || correcta<0 || correcta>3 || isNaN(correcta)){
+    if(!pregunta || !respostes || !imatge || respostes.length<4 || correcta<0 || correcta>3 || isNaN(correcta)){
         res.send('Falten dades o no són correctes');
     }
     else {
@@ -32,6 +43,7 @@ app.post('/addPregunta', (req, res) => {
 
 app.delete('/deletePregunta/:id', (req, res) => {
     const id = req.params.id;
+    console.log(id);
     const index = json.preguntes.findIndex(pregunta => pregunta.id == id);
     if(index === -1){
         res.send('No existeix la pregunta');
@@ -51,15 +63,16 @@ app.put('/updatePregunta/:id', (req, res) => {
     }
     else {
         const { pregunta, respostes,correcta,imatge } = req.body;
-        if(!pregunta || !respostes || !correcta || !imatge || respostes.length<4 || correcta<0 || correcta>3 || isNaN(correcta)){
+        if(!pregunta || !respostes || !imatge || respostes.length<4 || correcta<0 || correcta>3){
             res.send('Falten dades o no són correctes');
         }
         else {
             json.preguntes[index] = { "id": id, "pregunta":pregunta, "respostes":respostes, "resposta_correcta":correcta, "imatge": imatge };
             fs.writeFileSync('../db/dades.json', JSON.stringify(json));
-            res.send('Pregunta modificada');
+            
         }
     }
+    res.send('Pregunta actualitzada');
 });
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
