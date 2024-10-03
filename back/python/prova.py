@@ -9,4 +9,3 @@ for pregunta in data['preguntes']:
             print(resposta,'correcta')
         else:
             print(resposta)
-        
