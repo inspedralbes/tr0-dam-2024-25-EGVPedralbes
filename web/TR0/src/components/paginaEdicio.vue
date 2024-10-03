@@ -58,7 +58,7 @@
 
         </div>
         <label :for="'imatge'+pregunta.id">Imatge</label>
-        <input type="text" :name="'imatge'+pregunta.id" :id="'imatge'+pregunta.id" :value="pregunta.imatge" v-model="updatePreguntaData.imatge">
+        <input type="text" :name="'imatge'+pregunta.id" :id="'imatge'+pregunta.id" v-model="updatePreguntaData.imatge">
         <button @click="callUpdate(pregunta.id)">Enviar</button>
         <button @click="changeModifyState(pregunta.id)">Cancela</button>
       </div>
