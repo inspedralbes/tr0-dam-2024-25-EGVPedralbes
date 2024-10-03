@@ -1,7 +1,11 @@
 <template>
   <div>
+    <button @click="callGetPythonData">Tenir data de python</button>
     <!-- Botó per mostrar o amagar el formulari -->
     <button @click="show = !show">Crear pregunta</button>
+  </div>
+  <div v-if="dataPython!=''">
+    <p>{{dataPython}}</p>
   </div>
   <!-- Formulari per afegir una nova pregunta -->
   <div v-if=show >
@@ -68,13 +72,15 @@
 
 <script setup>
 import { findAllPreguntes } from "../communicationManager";
-import { deletePregunta, createPregunta, getPregunta, updatePregunta } from "../communicationManager";
+import { deletePregunta, createPregunta, getPregunta, updatePregunta, getPythonData } from "../communicationManager";
 import { ref, reactive, onMounted } from "vue";
 
 // Variable reactiva per emmagatzemar les preguntes
 const preguntes = ref("");
 // Variable per mostrar o amagar el formulari
 const show = ref(false);
+
+const dataPython = ref("");
 // Objecte reactiu per emmagatzemar la nova pregunta
 const newPregunta = reactive({
   pregunta: "",
@@ -82,6 +88,8 @@ const newPregunta = reactive({
   correcta: "",
   imatge: ""
 });
+
+
 
 const updatePreguntaData = reactive({
   pregunta: "",
@@ -107,6 +115,12 @@ const callfindAllPreguntes = async () => {
     modify.modifies.push({id: pregunta.id, modify: false});
   });
   return data;
+};
+
+const callGetPythonData = async () => {
+  let aux= await getPythonData()
+  dataPython.value = aux;
+  
 };
 
 // Funció per crear una nova pregunta

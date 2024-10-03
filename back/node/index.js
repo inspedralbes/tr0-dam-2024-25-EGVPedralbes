@@ -2,6 +2,7 @@ const express = require('express');
 const json=require('../db/dades.json');
 const fs = require('fs');
 const cors = require('cors');
+const { spawn } = require('child_process');
 
 const app = express();
 const port = 3000;
@@ -95,6 +96,17 @@ app.put('/updatePregunta/:id', (req, res) => {
     }
     res.send('Pregunta actualitzada');
 });
+
+app.get('/getPythonData', (req, res) => {
+    console.log("inicio");
+    const process=spawn('python', ['../python/prova.py']);
+    process.stdout.on('data', (data) => {
+        const messageFromPython = data.toString();
+        console.log('[Mensaje recibido desde Python:] ', messageFromPython,"  [end message]");
+        res.send(messageFromPython);
+    });
+}); 
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
