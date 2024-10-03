@@ -28,6 +28,27 @@ app.get('/pregunta/:id', (req, res) => {
     }
 });
 
+app.get('/preguntesPartida', (req, res) => {
+    const preguntes = json.preguntes;
+    const preguntesPartida = [];
+    for(let i = 0; i < 10; i++){
+        const index = Math.floor(Math.random() * preguntes.length);
+        if(preguntesPartida.includes(preguntes[index])){
+            i--;
+        }
+        else {
+            let auxObjext = {
+                "enunciat": preguntes[index].pregunta,
+                "respostes": [...preguntes[index].respostes],
+                "imatge": preguntes[index].imatge
+            };
+            auxObjext.respostes.sort(() => Math.random() - 0.5);
+            preguntesPartida.push(auxObjext);
+        }
+    }
+    res.send(preguntesPartida);
+});
+
 app.post('/addPregunta', (req, res) => {
     const { pregunta, respostes,correcta,imatge } = req.body;
     if(!pregunta || !respostes || !imatge || respostes.length<4 || correcta<0 || correcta>3 || isNaN(correcta)){
