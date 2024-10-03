@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 const port = 3000;
-
+const OngoingGames = [];
 app.use(express.json());
 app.use(cors());
 
@@ -30,7 +30,10 @@ app.get('/pregunta/:id', (req, res) => {
 
 app.get('/preguntesPartida', (req, res) => {
     const preguntes = json.preguntes;
-    const preguntesPartida = [];
+    const preguntesPartida = {
+        "preguntes": [],
+        "id":""
+    };
     for(let i = 0; i < 10; i++){
         const index = Math.floor(Math.random() * preguntes.length);
         if(preguntesPartida.includes(preguntes[index])){
@@ -43,9 +46,10 @@ app.get('/preguntesPartida', (req, res) => {
                 "imatge": preguntes[index].imatge
             };
             auxObjext.respostes.sort(() => Math.random() - 0.5);
-            preguntesPartida.push(auxObjext);
+            preguntesPartida.preguntes.push(auxObjext);
         }
     }
+    
     res.send(preguntesPartida);
 });
 
