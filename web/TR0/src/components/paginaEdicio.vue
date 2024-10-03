@@ -58,7 +58,7 @@
 
         </div>
         <label :for="'imatge'+pregunta.id">Imatge</label>
-        <input type="text" :name="'imatge'+pregunta.id" :id="'imatge'+pregunta.id" :value="updatePreguntaData.imatge">
+        <input type="text" :name="'imatge'+pregunta.id" :id="'imatge'+pregunta.id" :value="pregunta.imatge" v-model="updatePreguntaData.imatge">
         <button @click="callUpdate(pregunta.id)">Enviar</button>
         <button @click="changeModifyState(pregunta.id)">Cancela</button>
       </div>
@@ -125,7 +125,6 @@ const changeModifyState = (id) => {
         preguntes.value.forEach( async (pregunta) => {
           if(pregunta.id == id){
             let auxData= await callGetPregunta(id);
-            console.log('dis',auxData.respostes);
             updatePreguntaData.pregunta = auxData.pregunta;
             updatePreguntaData.respostes = auxData.respostes;
             updatePreguntaData.correcta = auxData.resposta_correcta;
@@ -156,6 +155,7 @@ const checkModifies = (id) => {
 };
 
 const callUpdate = async (id) => {
+  console.log('updatePreguntaData',updatePreguntaData);
   await updatePregunta(id, updatePreguntaData);
   preguntes.value = await callfindAllPreguntes();
   modify.modifies.forEach(modify => {
