@@ -1,11 +1,14 @@
 const express = require('express');
-const json=require('../db/dades.json');
+const json = require('../db/dades.json');
 const fs = require('fs');
 const cors = require('cors');
+const { spawn } = require('child_process');
+const { v4: uuidv4 } = require('uuid');
+const partidas = [];
 
 const app = express();
 const port = 3000;
-const OngoingGames = [];
+
 app.use(express.json());
 app.use(cors());
 
@@ -20,7 +23,7 @@ app.get('/preguntes', (req, res) => {
 app.get('/pregunta/:id', (req, res) => {
     const id = req.params.id;
     const pregunta = json.preguntes.find(pregunta => pregunta.id == id);
-    if(pregunta){
+    if (pregunta) {
         res.send(pregunta);
     }
     else {
@@ -28,15 +31,16 @@ app.get('/pregunta/:id', (req, res) => {
     }
 });
 
-app.get('/preguntesPartida', (req, res) => {
+app.post('/preguntesPartida', (req, res) => {
+    const uid = req.body.uid;
     const preguntes = json.preguntes;
-    const preguntesPartida = {
-        "preguntes": [],
-        "id":""
+    const partida = {
+        uid: "",
+        preguntes: [],
     };
-    for(let i = 0; i < 10; i++){
+    for (let i = 0; i < 10; i++) {
         const index = Math.floor(Math.random() * preguntes.length);
-        if(preguntesPartida.includes(preguntes[index])){
+        if (partida.preguntes.includes(preguntes[index])) {
             i--;
         }
         else {
@@ -46,31 +50,41 @@ app.get('/preguntesPartida', (req, res) => {
                 "imatge": preguntes[index].imatge
             };
             auxObjext.respostes.sort(() => Math.random() - 0.5);
-            preguntesPartida.preguntes.push(auxObjext);
+            partida.preguntes.push(auxObjext);
         }
     }
-    
-    res.send(preguntesPartida);
+    partida.uid = generateUid(uid);
+    partidas[partida.uid] = partida;
+    res.send(partidas);
 });
 
+function generateUid(uid) {
+    console.log("buleria buleria", uid);
+    if (uid==undefined || uuid.validate(uid)) {
+        console.log("tan dentro del alma mia");
+        uid = uuidv4();
+    }
+    return uid;
+}
+
 app.post('/addPregunta', (req, res) => {
-    const { pregunta, respostes,correcta,imatge } = req.body;
-    if(!pregunta || !respostes || !imatge || respostes.length<4 || correcta<0 || correcta>3 || isNaN(correcta)){
+    const { pregunta, respostes, correcta, imatge } = req.body;
+    if (!pregunta || !respostes || !imatge || respostes.length < 4 || correcta < 0 || correcta > 3 || isNaN(correcta)) {
         res.send('Falten dades o no són correctes');
     }
     else {
-        json.preguntes.push({ "id": json.preguntes[json.preguntes.length-1].id+1, "pregunta":pregunta, "respostes":respostes, "resposta_correcta":correcta, "imatge": imatge });
+        json.preguntes.push({ "id": json.preguntes[json.preguntes.length - 1].id + 1, "pregunta": pregunta, "respostes": respostes, "resposta_correcta": correcta, "imatge": imatge });
         fs.writeFileSync('../db/dades.json', JSON.stringify(json));
         res.send('Pregunta afegida');
     }
-    
+
 });
 
 app.delete('/deletePregunta/:id', (req, res) => {
     const id = req.params.id;
     console.log(id);
     const index = json.preguntes.findIndex(pregunta => pregunta.id == id);
-    if(index === -1){
+    if (index === -1) {
         res.send('No existeix la pregunta');
     }
     else {
@@ -83,22 +97,33 @@ app.delete('/deletePregunta/:id', (req, res) => {
 app.put('/updatePregunta/:id', (req, res) => {
     const id = req.params.id;
     const index = json.preguntes.findIndex(pregunta => pregunta.id == id);
-    if(index == -1){
+    if (index == -1) {
         res.send('No existeix la pregunta');
     }
     else {
-        const { pregunta, respostes,correcta,imatge } = req.body;
-        if(!pregunta || !respostes || !imatge || respostes.length<4 || correcta<0 || correcta>3){
+        const { pregunta, respostes, correcta, imatge } = req.body;
+        if (!pregunta || !respostes || !imatge || respostes.length < 4 || correcta < 0 || correcta > 3) {
             res.send('Falten dades o no són correctes');
         }
         else {
-            json.preguntes[index] = { "id": id, "pregunta":pregunta, "respostes":respostes, "resposta_correcta":correcta, "imatge": imatge };
+            json.preguntes[index] = { "id": id, "pregunta": pregunta, "respostes": respostes, "resposta_correcta": correcta, "imatge": imatge };
             fs.writeFileSync('../db/dades.json', JSON.stringify(json));
-            
+
         }
     }
     res.send('Pregunta actualitzada');
 });
+
+app.get('/getPythonData', (req, res) => {
+    console.log("inicio");
+    const process = spawn('python', ['../python/prova.py']);
+    process.stdout.on('data', (data) => {
+        const messageFromPython = data.toString();
+        console.log('[Mensaje recibido desde Python:] ', messageFromPython, "  [end message]");
+        res.send(messageFromPython);
+    });
+});
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
