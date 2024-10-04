@@ -69,22 +69,22 @@ app.post('/respostesPartida', (req, res) => {
     const uid = req.body.uid;
     const respostes = req.body.respostes;
     const partida = partidas[uid];
-    let date=new Date();
-    let today=date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear();
+    let date = new Date();
+    let today = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
     if (partida) {
         if (respostes.length == partida.preguntes.length) {
-            if(!fs.existsSync('../db/'+today)){
-                fs.mkdirSync('../db/'+today);
-                data={
-                    dadesTotals:{
-                        preguntesIntentades:0,
-                        preguntesCorrectes:0,
+            if (!fs.existsSync('../db/' + today)) {
+                fs.mkdirSync('../db/' + today);
+                data = {
+                    dadesTotals: {
+                        preguntesIntentades: 0,
+                        preguntesCorrectes: 0,
                     },
-                    dadesPerPregunta:[]
+                    dadesPerPregunta: []
                 };
-                fs.writeFileSync('../db/'+today+'/dades.json', JSON.stringify(data));
+                fs.writeFileSync('../db/' + today + '/dades.json', JSON.stringify(data));
             }
-            let statFile = fs.readFileSync('../db/'+today+'/dades.json');
+            let statFile = fs.readFileSync('../db/' + today + '/dades.json');
             statFile = JSON.parse(statFile);
             for (let i = 0; i < partida.preguntes.length; i++) {
                 let pregunta = json.preguntes.find(pregunta => pregunta.id == partida.preguntes[i].id);
@@ -92,31 +92,41 @@ app.post('/respostesPartida', (req, res) => {
                     partida.preguntes[i].correcte = true;
                     statFile.dadesTotals.preguntesCorrectes++;
                     statFile.dadesTotals.preguntesIntentades++;
-                    if(statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id)){
-                        statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id).intents++;
-                        statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id).correctes++;
+                    if (statFile.dadesPerPregunta.find(pregunta => pregunta.id == partida.preguntes[i].id)) {
+                        statFile.dadesPerPregunta.find(pregunta => pregunta.id == partida.preguntes[i].id).intents++;
+                        statFile.dadesPerPregunta.find(pregunta => pregunta.id == partida.preguntes[i].id).correctes++;
                     } else {
                         statFile.dadesPerPregunta.push({
-                            id:partida.preguntes[i].id,
-                            intents:1,
-                            correctes:1
+                            id: partida.preguntes[i].id,
+                            intents: 1,
+                            correctes: 1,
+                            respostes: []
                         });
                     }
+
                 } else {
                     partida.preguntes[i].correcte = false;
                     statFile.dadesTotals.preguntesIntentades++;
-                    if(statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id)){
-                        statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id).intents++;
+                    if (statFile.dadesPerPregunta.find(pregunta => pregunta.id == partida.preguntes[i].id)) {
+                        statFile.dadesPerPregunta.find(pregunta => pregunta.id == partida.preguntes[i].id).intents++;
                     } else {
                         statFile.dadesPerPregunta.push({
-                            id:partida.preguntes[i].id,
-                            intents:1,
-                            correctes:0
+                            id: partida.preguntes[i].id,
+                            intents: 1,
+                            correctes: 0
                         });
                     }
                 }
+                if (!statFile.dadesPerPregunta.respostes.find(resposta.text == partida.preguntes[i].respostes[respostes[i]])) {
+                    statFile.dadesPerPregunta.respostes.push({
+                        text: partida.preguntes[i].respostes[respostes[i]],
+                        escollida: 1,
+                    });
+                } else {
+                    statFile.dadesPerPregunta.respostes.find(resposta.text == partida.preguntes[i].respostes[respostes[i]]).escollida++;
+                }
             }
-            fs.writeFileSync('../db/'+today+'/dades.json', JSON.stringify(statFile));
+            fs.writeFileSync('../db/' + today + '/dades.json', JSON.stringify(statFile));
             res.send(partida);
         } else {
             res.send('Falten respostes');
