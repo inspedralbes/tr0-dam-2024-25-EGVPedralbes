@@ -42,3 +42,9 @@ export async function updatePregunta(id, pregunta) {
     });
     return 0;
 }
+
+export async function getPythonData() {
+    const response = await fetch('http://localhost:3000/getPythonData');
+    const data = await response.text();
+    return data;
+}

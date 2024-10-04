@@ -3,6 +3,7 @@ const json = require('../db/dades.json');
 const fs = require('fs');
 const cors = require('cors');
 const { spawn } = require('child_process');
+const { spawn } = require('child_process');
 const { v4: uuidv4, validate } = require('uuid');
 const { isUuid } = require('uuidv4');
 const partidas = [];
@@ -194,13 +195,13 @@ app.put('/updatePregunta/:id', (req, res) => {
 
 app.get('/getPythonData', (req, res) => {
     console.log("inicio");
-    const process = spawn('python', ['../python/prova.py']);
+    const process=spawn('python', ['../python/prova.py']);
     process.stdout.on('data', (data) => {
         const messageFromPython = data.toString();
-        console.log('[Mensaje recibido desde Python:] ', messageFromPython, "  [end message]");
+        console.log('[Mensaje recibido desde Python:] ', messageFromPython,"  [end message]");
         res.send(messageFromPython);
     });
-});
+}); 
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
