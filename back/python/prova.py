@@ -1,4 +1,5 @@
 import json
+import numpy as np
 route='../db/dades.json'
 with open(route) as file:
     data = json.load(file)
