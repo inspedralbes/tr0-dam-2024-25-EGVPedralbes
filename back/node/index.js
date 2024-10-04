@@ -3,7 +3,8 @@ const json = require('../db/dades.json');
 const fs = require('fs');
 const cors = require('cors');
 const { spawn } = require('child_process');
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4, validate } = require('uuid');
+const { isUuid } = require('uuidv4');
 const partidas = [];
 
 const app = express();
@@ -40,11 +41,12 @@ app.post('/preguntesPartida', (req, res) => {
     };
     for (let i = 0; i < 10; i++) {
         const index = Math.floor(Math.random() * preguntes.length);
-        if (partida.preguntes.includes(preguntes[index])) {
+        if (partida.preguntes.some(p => p.enunciat === preguntes[index].pregunta)) {
             i--;
         }
         else {
             let auxObjext = {
+                "id": preguntes[index].id,
                 "enunciat": preguntes[index].pregunta,
                 "respostes": [...preguntes[index].respostes],
                 "imatge": preguntes[index].imatge
@@ -54,16 +56,82 @@ app.post('/preguntesPartida', (req, res) => {
         }
     }
     partida.uid = generateUid(uid);
-    partidas[partida.uid] = partida;
-    res.send(partidas);
+    partidas[partida.uid] = JSON.parse(JSON.stringify(partida));
+    partida.preguntes.forEach(pregunta => {
+        delete pregunta.id;
+    });
+    console.log(partidas);
+    res.send(partida);
+});
+
+
+app.post('/respostesPartida', (req, res) => {
+    const uid = req.body.uid;
+    const respostes = req.body.respostes;
+    const partida = partidas[uid];
+    let date=new Date();
+    let today=date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear();
+    if (partida) {
+        if (respostes.length == partida.preguntes.length) {
+            if(!fs.existsSync('../db/'+today)){
+                fs.mkdirSync('../db/'+today);
+                data={
+                    dadesTotals:{
+                        preguntesIntentades:0,
+                        preguntesCorrectes:0,
+                    },
+                    dadesPerPregunta:[]
+                };
+                fs.writeFileSync('../db/'+today+'/dades.json', JSON.stringify(data));
+            }
+            let statFile = fs.readFileSync('../db/'+today+'/dades.json');
+            statFile = JSON.parse(statFile);
+            for (let i = 0; i < partida.preguntes.length; i++) {
+                let pregunta = json.preguntes.find(pregunta => pregunta.id == partida.preguntes[i].id);
+                if (pregunta.respostes[pregunta.resposta_correcta] == partida.preguntes[i].respostes[respostes[i]]) {
+                    partida.preguntes[i].correcte = true;
+                    statFile.dadesTotals.preguntesCorrectes++;
+                    statFile.dadesTotals.preguntesIntentades++;
+                    if(statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id)){
+                        statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id).intents++;
+                        statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id).correctes++;
+                    } else {
+                        statFile.dadesPerPregunta.push({
+                            id:partida.preguntes[i].id,
+                            intents:1,
+                            correctes:1
+                        });
+                    }
+                } else {
+                    partida.preguntes[i].correcte = false;
+                    statFile.dadesTotals.preguntesIntentades++;
+                    if(statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id)){
+                        statFile.dadesPerPregunta.find(pregunta=>pregunta.id==partida.preguntes[i].id).intents++;
+                    } else {
+                        statFile.dadesPerPregunta.push({
+                            id:partida.preguntes[i].id,
+                            intents:1,
+                            correctes:0
+                        });
+                    }
+                }
+            }
+            fs.writeFileSync('../db/'+today+'/dades.json', JSON.stringify(statFile));
+            res.send(partida);
+        } else {
+            res.send('Falten respostes');
+        }
+    }
+    else {
+        res.send('No existeix la partida');
+    }
 });
 
 function generateUid(uid) {
-    console.log("buleria buleria", uid);
-    if (uid==undefined || uuid.validate(uid)) {
-        console.log("tan dentro del alma mia");
+    if (uid == undefined || !validate(uid)) {
         uid = uuidv4();
     }
+    console.log(uid);
     return uid;
 }
 
