@@ -1,0 +1,353 @@
+{
+    "dadesTotals": {
+        "preguntesIntentades": 20,
+        "preguntesCorrectes": 4
+    },
+    "dadesPerPregunta": [
+        {
+            "id": "6",
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Ganondorf",
+                    "escollida": 1
+                },
+                {
+                    "text": "Zelda",
+                    "escollida": 0
+                },
+                {
+                    "text": "Link",
+                    "escollida": 0
+                },
+                {
+                    "text": "Mario",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "intents": 2,
+            "correctes": 1,
+            "respostes": [
+                {
+                    "text": "Link",
+                    "escollida": 0
+                },
+                {
+                    "text": "Geralt of Rivia",
+                    "escollida": 1
+                },
+                {
+                    "text": "Ezio Auditore",
+                    "escollida": 1
+                },
+                {
+                    "text": "Master Chief",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Xbox 360",
+                    "escollida": 0
+                },
+                {
+                    "text": "Nintendo Wii",
+                    "escollida": 0
+                },
+                {
+                    "text": "PlayStation 2",
+                    "escollida": 1
+                },
+                {
+                    "text": "Sega Dreamcast",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "intents": 2,
+            "correctes": 2,
+            "respostes": [
+                {
+                    "text": "Half-Life",
+                    "escollida": 0
+                },
+                {
+                    "text": "Counter-Strike",
+                    "escollida": 0
+                },
+                {
+                    "text": "Doom",
+                    "escollida": 0
+                },
+                {
+                    "text": "Quake",
+                    "escollida": 2
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Sega Genesis",
+                    "escollida": 0
+                },
+                {
+                    "text": "Super Nintendo Entertainment System (SNES)",
+                    "escollida": 0
+                },
+                {
+                    "text": "Sony PlayStation",
+                    "escollida": 0
+                },
+                {
+                    "text": "Atari 2600",
+                    "escollida": 1
+                }
+            ]
+        },
+        {
+            "id": 18,
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Ares",
+                    "escollida": 0
+                },
+                {
+                    "text": "Atreus",
+                    "escollida": 0
+                },
+                {
+                    "text": "Zeus",
+                    "escollida": 1
+                },
+                {
+                    "text": "Kratos",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": 26,
+            "intents": 2,
+            "correctes": 1,
+            "respostes": [
+                {
+                    "text": "Daggerfall",
+                    "escollida": 0
+                },
+                {
+                    "text": "Skyrim",
+                    "escollida": 1
+                },
+                {
+                    "text": "Oblivion",
+                    "escollida": 1
+                },
+                {
+                    "text": "Morrowind",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": 22,
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Ubisoft",
+                    "escollida": 1
+                },
+                {
+                    "text": "Bethesda Game Studios",
+                    "escollida": 0
+                },
+                {
+                    "text": "CD Projekt Red",
+                    "escollida": 0
+                },
+                {
+                    "text": "Rockstar Games",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "intents": 2,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Pokémon Gold i Silver",
+                    "escollida": 0
+                },
+                {
+                    "text": "Pokémon Red i Green",
+                    "escollida": 0
+                },
+                {
+                    "text": "Pokémon Blue",
+                    "escollida": 2
+                },
+                {
+                    "text": "Pokémon Yellow",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": 19,
+            "intents": 2,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Halo: Combat Evolved",
+                    "escollida": 0
+                },
+                {
+                    "text": "Halo 3",
+                    "escollida": 1
+                },
+                {
+                    "text": "Halo 2",
+                    "escollida": 0
+                },
+                {
+                    "text": "Halo: Reach",
+                    "escollida": 1
+                }
+            ]
+        },
+        {
+            "id": 16,
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Pong",
+                    "escollida": 1
+                },
+                {
+                    "text": "Pac-Man",
+                    "escollida": 0
+                },
+                {
+                    "text": "Donkey Kong",
+                    "escollida": 0
+                },
+                {
+                    "text": "Space Invaders",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": 24,
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Hitman",
+                    "escollida": 0
+                },
+                {
+                    "text": "Max Payne",
+                    "escollida": 1
+                },
+                {
+                    "text": "Splinter Cell",
+                    "escollida": 0
+                },
+                {
+                    "text": "Metal Gear",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": 23,
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "2011",
+                    "escollida": 0
+                },
+                {
+                    "text": "2013",
+                    "escollida": 0
+                },
+                {
+                    "text": "2015",
+                    "escollida": 1
+                },
+                {
+                    "text": "2017",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": "1",
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Mario Kart",
+                    "escollida": 0
+                },
+                {
+                    "text": "Super Mario Bros.",
+                    "escollida": 1
+                },
+                {
+                    "text": "Wrecking Crew",
+                    "escollida": 0
+                },
+                {
+                    "text": "Donkey Kong",
+                    "escollida": 0
+                }
+            ]
+        },
+        {
+            "id": "12",
+            "intents": 1,
+            "correctes": 0,
+            "respostes": [
+                {
+                    "text": "Super Mario 64",
+                    "escollida": 0
+                },
+                {
+                    "text": "Virtua Fighter",
+                    "escollida": 0
+                },
+                {
+                    "text": "Final Fantasy VII",
+                    "escollida": 1
+                },
+                {
+                    "text": "Tomb Raider",
+                    "escollida": 0
+                }
+            ]
+        }
+    ]
+}

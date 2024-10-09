@@ -8,7 +8,7 @@ const { isUuid } = require('uuidv4');
 const partidas = [];
 
 const app = express();
-const port = 3000;
+const port = 24269;
 
 app.use(express.json());
 app.use(cors());
@@ -70,7 +70,10 @@ app.post('/respostesPartida', (req, res) => {
     const respostes = req.body.respostes;
     const partida = partidas[uid];
     let date = new Date();
-    let today = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+    let day = date.getDate().toString().padStart(2, '0');
+    let month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    let year = date.getFullYear();
+    let today = `${day}-${month}-${year}`;
     if (partida) {
         if (respostes.length == partida.preguntes.length) {
             if (!fs.existsSync('../db/' + today)) {

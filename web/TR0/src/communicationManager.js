@@ -1,12 +1,12 @@
 export async function findAllPreguntes() {
-    const response = await fetch('http://localhost:3000/preguntes');
+    const response = await fetch('http://quizeric.dam.inspedralbes.cat:24269/preguntes');
     let data = await response.json();
 
     return data;
     
 }
 export async function deletePregunta(id) {
-    const response = await fetch('http://localhost:3000/deletePregunta/'+id, {
+    const response = await fetch('http://quizeric.dam.inspedralbes.cat:24269/deletePregunta/'+id, {
         method: 'DELETE'
     });
     let data = await response.text();
@@ -14,7 +14,7 @@ export async function deletePregunta(id) {
     return data;
 }
 export async function createPregunta(pregunta) {
-    const response = await fetch('http://localhost:3000/addPregunta', {
+    const response = await fetch('http://quizeric.dam.inspedralbes.cat:24269/addPregunta', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ export async function createPregunta(pregunta) {
 }
 
 export async function getPregunta(id) {
-    const response = await fetch('http://localhost:3000/pregunta/'+id);
+    const response = await fetch('http://quizeric.dam.inspedralbes.cat:24269/pregunta/'+id);
     let data = await response.json();
     console.log(data);
 
@@ -33,7 +33,7 @@ export async function getPregunta(id) {
 }
 
 export async function updatePregunta(id, pregunta) {
-    const response = await fetch('http://localhost:3000/updatePregunta/'+id, {
+    const response = await fetch('http://quizeric.dam.inspedralbes.cat:24269/updatePregunta/'+id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ export async function updatePregunta(id, pregunta) {
 }
 
 export async function getPythonData() {
-    const response = await fetch('http://localhost:3000/getPythonData');
+    const response = await fetch('http://quizeric.dam.inspedralbes.cat:24269/getPythonData');
     const data = await response.text();
     return data;
 }
