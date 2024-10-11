@@ -33,6 +33,7 @@ app.get('/pregunta/:id', (req, res) => {
 });
 
 app.post('/preguntesPartida', (req, res) => {
+    console.log("IniciaProceso")
     const uid = req.body.uid;
     const preguntes = json.preguntes;
     const partida = {
@@ -69,6 +70,7 @@ app.post('/respostesPartida', (req, res) => {
     const uid = req.body.uid;
     const respostes = req.body.respostes;
     const partida = partidas[uid];
+    let encertades=0;
     let date = new Date();
     let day = date.getDate().toString().padStart(2, '0');
     let month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
@@ -93,6 +95,7 @@ app.post('/respostesPartida', (req, res) => {
                 let pregunta = json.preguntes.find(pregunta => pregunta.id == partida.preguntes[i].id);
                 if (pregunta.respostes[pregunta.resposta_correcta] == partida.preguntes[i].respostes[respostes[i]]) {
                     partida.preguntes[i].correcte = true;
+                    encertades++;
                     statFile.dadesTotals.preguntesCorrectes++;
                     statFile.dadesTotals.preguntesIntentades++;
                     if (statFile.dadesPerPregunta.find(pregunta => pregunta.id == partida.preguntes[i].id)) {
@@ -140,7 +143,7 @@ app.post('/respostesPartida', (req, res) => {
                 statFile.dadesPerPregunta.find(pregunta => pregunta.id == partida.preguntes[i].id).respostes.find(resposta => resposta.text == partida.preguntes[i].respostes[respostes[i]]).escollida++;
             }
             fs.writeFileSync('../db/' + today + '/dades.json', JSON.stringify(statFile));
-            res.send(partida);
+            res.send({"encertades":encertades, "uid":uid});
         } else {
             res.send('Falten respostes');
         }
@@ -154,7 +157,7 @@ function generateUid(uid) {
     if (uid == undefined || !validate(uid)) {
         uid = uuidv4();
     }
-    console.log(uid);
+   
     return uid;
 }
 
@@ -207,7 +210,8 @@ app.put('/updatePregunta/:id', (req, res) => {
 
 app.get('/getPythonData', (req, res) => {
     console.log("inicio");
-    const process = spawn('python', ['../python/prova.py']);
+    const activateVenv = spawn('cmd.exe', ['/c', '../python/venv/Scripts/activate && python ../python/prova.py']);
+    const process = activateVenv;
     process.stdout.on('data', (data) => {
         const messageFromPython = data.toString();
         console.log('[Mensaje recibido desde Python:] ', messageFromPython, "  [end message]");
