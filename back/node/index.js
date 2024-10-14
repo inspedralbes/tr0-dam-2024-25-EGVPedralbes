@@ -62,6 +62,7 @@ app.post('/preguntesPartida', (req, res) => {
         delete pregunta.id;
     });
     console.log(partidas);
+    partida.encertades=-2;
     res.send(partida);
 });
 
@@ -210,8 +211,8 @@ app.put('/updatePregunta/:id', (req, res) => {
 
 app.get('/getPythonData', (req, res) => {
     console.log("inicio");
-    const activateVenv = spawn('cmd.exe', ['/c', '../python/venv/Scripts/activate && python ../python/prova.py']);
-    const process = activateVenv;
+
+    const process = pythonExecuitng=spawn('python3', ['./python/prova.py']);
     process.stdout.on('data', (data) => {
         const messageFromPython = data.toString();
         console.log('[Mensaje recibido desde Python:] ', messageFromPython, "  [end message]");
