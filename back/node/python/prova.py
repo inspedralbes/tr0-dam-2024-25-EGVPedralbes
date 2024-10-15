@@ -1,6 +1,4 @@
 import json
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import warnings
@@ -14,9 +12,12 @@ routeData='../../db/dades.json'
 today_date = datetime.now().strftime("%d-%m-%Y")
 statisticsRoute='../../db/'+today_date+'/dades.json'
 outputImagePath='../images/'+today_date+'/output.png'
+print(outputImagePath)  
 if not os.path.exists('../images/'+today_date):
     os.makedirs('../images/'+today_date)
+   
 if os.path.exists(statisticsRoute):
+
     with open(statisticsRoute) as f:
         todayData = json.load(f)
         f.close()
@@ -47,9 +48,9 @@ if os.path.exists(statisticsRoute):
     plt.subplots_adjust(bottom=0.3)
 
     plt.savefig(outputImagePath)
-    print(outputImagePath)
+    print("http://localhost:24269/images"+today_date+"/output.png")
 else:
-    print("No hi ha dades per ", today_date)
+    print("http://localhost:24269/images/noData/noData.png")
     exit()
 
 

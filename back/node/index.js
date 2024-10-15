@@ -12,6 +12,7 @@ const port = 24269;
 
 app.use(express.json());
 app.use(cors());
+app.use('/images', express.static('images'));
 
 app.get('/', (req, res) => {
     res.send(json);
